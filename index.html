@@ -1,1 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Annie-pie 🏠</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --yellow:#F5C842;--yellow-light:#FFF8D6;--yellow-warm:#F7D06B;
+  --blue-wall:#3B5998;--blue-dark:#2C3E6B;
+  --pink:#E8728A;--neon-pink:#FF2E7E;
+  --green:#5B8A5A;--cream:#FDF6E3;
+  --brown:#8B6347;--brown-light:#C4956A;
+  --text-dark:#2A1F0E;--text-mid:#5C4A32;
+}
+body{font-family:'DM Sans',sans-serif;background:#0d0d1a;color:var(--text-dark);overflow-x:hidden;}
 
+/* WELCOME */
+#welcome{position:fixed;inset:0;background:linear-gradient(135deg,#1a0a2e 0%,#2d1b4e 50%,#1a0a2e 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity 0.8s;}
+#welcome.fade-out{opacity:0;pointer-events:none;}
+.stars-bg{position:absolute;inset:0;overflow:hidden;}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s infinite;}
+@keyframes twinkle{0%,100%{opacity:0.2}50%{opacity:1}}
+.welcome-content{text-align:center;z-index:1;padding:2rem;}
+.welcome-emoji{font-size:4rem;animation:bounce 2s infinite;display:block;margin-bottom:1rem;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.welcome-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,4rem);color:#fff;line-height:1.2;margin-bottom:0.5rem;}
+.welcome-sub{font-family:'Caveat',cursive;font-size:clamp(1.2rem,3vw,1.8rem);color:var(--yellow-warm);margin-bottom:2.5rem;}
+.enter-btn{background:var(--yellow);color:var(--text-dark);border:none;padding:1rem 3rem;font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:500;border-radius:50px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(245,200,66,0.4);}
+.enter-btn:hover{transform:scale(1.05);box-shadow:0 6px 30px rgba(245,200,66,0.6);}
+
+/* NAV */
+#room-nav{position:fixed;top:0;left:0;right:0;background:rgba(13,13,26,0.95);backdrop-filter:blur(8px);padding:0.7rem 1rem;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;z-index:100;border-bottom:1px solid rgba(245,200,66,0.2);}
+.nav-label{color:var(--yellow);font-family:'Caveat',cursive;font-size:1.1rem;margin-right:0.3rem;}
+.room-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.3rem 0.8rem;border-radius:20px;cursor:pointer;font-size:0.82rem;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.room-btn:hover,.room-btn.active{background:var(--yellow);color:var(--text-dark);border-color:var(--yellow);}
+
+/* ROOMS */
+.room{display:none;min-height:100vh;padding-top:65px;animation:roomIn 0.4s ease;}
+.room.active{display:block;}
+@keyframes roomIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.room-header{text-align:center;padding:1.5rem 1rem 0.5rem;}
+.room-header h2{font-family:'Caveat',cursive;font-size:2.2rem;color:#fff;margin-bottom:0.2rem;}
+.room-header p{color:rgba(255,255,255,0.45);font-size:0.85rem;}
+
+/* TOOLTIP base */
+.tip{display:none;position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:rgba(10,10,20,0.95);color:#fff;padding:0.6rem 1rem;border-radius:8px;font-size:0.8rem;text-align:center;max-width:230px;z-index:50;line-height:1.5;pointer-events:none;border:1px solid rgba(255,255,255,0.1);}
+
+/* ===== LIVING ROOM ===== */
+#room-living{background:#1e2640;}
+.living-scene{max-width:920px;margin:0 auto;padding:1rem 1rem 3rem;position:relative;}
+.birthday-banner{text-align:center;margin:0.5rem 0 1.5rem;position:relative;}
+.banner-flags{display:flex;justify-content:center;gap:0;margin-bottom:0.5rem;flex-wrap:wrap;}
+.flag{width:22px;height:30px;display:inline-block;clip-path:polygon(0 0,100% 0,100% 75%,50% 100%,0 75%);margin:0 3px;}
+.banner-text{font-family:'Caveat',cursive;font-size:clamp(1.8rem,6vw,4rem);font-weight:700;color:var(--yellow);text-shadow:3px 3px 0 #7a5a00,0 0 30px rgba(245,200,66,0.5);line-height:1.1;animation:banner-pulse 3s infinite;}
+@keyframes banner-pulse{0%,100%{text-shadow:3px 3px 0 #7a5a00,0 0 30px rgba(245,200,66,0.4)}50%{text-shadow:3px 3px 0 #7a5a00,0 0 60px rgba(245,200,66,0.7)}}
+
+/* Wall */
+.wall{background:var(--blue-wall);border-radius:14px 14px 0 0;padding:1.5rem 1.5rem 0;position:relative;border:3px solid var(--blue-dark);min-height:360px;}
+.floor{background:linear-gradient(to bottom,#6B4423,#3e2010);height:36px;border-radius:0 0 12px 12px;border:3px solid var(--blue-dark);border-top:none;}
+.fairy-bar{display:flex;justify-content:space-between;padding:0 4px;margin-bottom:10px;}
+.fbulb{width:9px;height:13px;border-radius:50% 50% 40% 40%;animation:flicker 2s infinite;}
+.fbulb::before{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:2px;height:5px;background:rgba(255,255,255,0.4);}
+@keyframes flicker{0%,100%{opacity:1}45%{opacity:0.6}50%{opacity:1}75%{opacity:0.8}}
+
+/* Neon sign */
+.neon-sign{font-family:'Caveat',cursive;font-size:1.6rem;color:var(--neon-pink);text-shadow:0 0 8px var(--neon-pink),0 0 18px var(--neon-pink);animation:neon-p 2.5s infinite;position:absolute;right:1.5rem;top:4rem;writing-mode:vertical-rl;cursor:pointer;transition:transform 0.2s;line-height:1;}
+@keyframes neon-p{0%,100%{opacity:1}50%{opacity:0.8;text-shadow:0 0 4px var(--neon-pink),0 0 8px var(--neon-pink)}}
+.neon-sign:hover{transform:scale(1.1);}
+.neon-sign .tip{writing-mode:horizontal-tb;right:120%;left:auto;bottom:auto;top:50%;transform:translateY(-50%);}
+.neon-sign:hover .tip{display:block;}
+
+/* TV */
+.tv-wrap{display:flex;justify-content:center;margin-bottom:1rem;}
+.tv{background:#111;width:260px;height:155px;border-radius:6px;border:10px solid #2a2a2a;cursor:pointer;overflow:hidden;position:relative;transition:transform 0.2s;box-shadow:0 0 30px rgba(0,0,0,0.5);}
+.tv:hover{transform:scale(1.02);}
+.tv-screen{width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.tv-text{color:#fff;font-family:'Caveat',cursive;font-size:0.9rem;text-align:center;line-height:1.5;}
+.tv .tip{bottom:115%;white-space:nowrap;}
+.tv:hover .tip{display:block;}
+.tv-stand{background:#444;width:36px;height:10px;margin:0 auto;border-radius:0 0 3px 3px;}
+.tv-base{background:#333;width:70px;height:7px;margin:0 auto;border-radius:3px;}
+
+/* Furniture row */
+.frow{display:flex;align-items:flex-end;justify-content:center;gap:0.8rem;padding-bottom:0.5rem;flex-wrap:wrap;}
+
+/* Sofa */
+.sofa{cursor:pointer;transition:transform 0.2s;position:relative;}
+.sofa:hover{transform:scale(1.02) translateY(-3px);}
+.sofa-body{display:flex;align-items:flex-start;}
+.s-arm{background:#e6b825;width:26px;height:74px;border-radius:8px;border:2px solid #d4a820;flex-shrink:0;}
+.s-back{background:var(--yellow);width:220px;height:68px;border-radius:8px 8px 0 0;border:2px solid #d4a820;display:flex;align-items:center;justify-content:center;gap:5px;padding:6px;}
+.cushion{background:#e6b825;flex:1;height:52px;border-radius:6px;border:1px solid rgba(255,255,255,0.25);}
+.s-seat{background:#e6b825;width:220px;height:26px;border-radius:0 0 8px 8px;margin-left:26px;border:2px solid #d4a820;border-top:none;}
+.sofa .tip{white-space:normal;}
+.sofa:hover .tip{display:block;}
+
+/* Lamps */
+.lamp{cursor:pointer;transition:filter 0.2s;position:relative;text-align:center;}
+.lamp:hover{filter:brightness(1.3);}
+.lamp-glow{position:absolute;bottom:55px;left:50%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,0.3),transparent 70%);pointer-events:none;}
+.l-shade-big{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:36px solid var(--yellow);margin:0 auto;}
+.l-pole-big{background:#8B6347;width:5px;height:55px;margin:0 auto;}
+.l-base-big{background:#6B4423;width:26px;height:9px;border-radius:3px;margin:0 auto;}
+.l-shade-sm{width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-bottom:26px solid var(--yellow);margin:0 auto;}
+.l-pole-sm{background:#8B6347;width:4px;height:42px;margin:0 auto;}
+.l-base-sm{background:#6B4423;width:20px;height:7px;border-radius:3px;margin:0 auto;}
+.lamp .tip{white-space:nowrap;}
+.lamp:hover .tip{display:block;}
+
+/* Coffee table */
+.ctable{cursor:pointer;transition:transform 0.2s;position:relative;text-align:center;}
+.ctable:hover{transform:scale(1.05);}
+.ctable-items{font-size:1rem;margin-bottom:4px;letter-spacing:2px;}
+.ctable-top{background:#C4956A;width:130px;height:16px;border-radius:5px;border:2px solid var(--brown);}
+.ctable-legs{display:flex;justify-content:space-between;padding:0 8px;}
+.ctable-leg{background:var(--brown);width:7px;height:22px;border-radius:0 0 3px 3px;}
+.ctable .tip{white-space:normal;}
+.ctable:hover .tip{display:block;}
+
+/* Xmas tree */
+.xtree{cursor:pointer;transition:transform 0.2s;position:relative;text-align:center;}
+.xtree:hover{transform:scale(1.05);}
+.xt-star{font-size:1.2rem;}
+.xt-t{width:0;height:0;border-left:24px solid transparent;border-right:24px solid transparent;border-bottom:44px solid #2D6A2D;margin:0 auto;}
+.xt-m{width:0;height:0;border-left:32px solid transparent;border-right:32px solid transparent;border-bottom:44px solid #3A8A3A;margin:-18px auto 0;}
+.xt-b{width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:50px solid #2D6A2D;margin:-18px auto 0;}
+.xt-trunk{background:#6B4423;width:14px;height:18px;margin:0 auto;}
+.xtree .tip{white-space:normal;}
+.xtree:hover .tip{display:block;}
+
+/* Rug */
+.rug-wrap{position:relative;text-align:center;cursor:pointer;}
+.rug{width:230px;height:28px;margin:0 auto;background:repeating-linear-gradient(90deg,#8B3A3A,#8B3A3A 8px,#C4614A 8px,#C4614A 16px,#E8A87C 16px,#E8A87C 24px,#C4614A 24px,#C4614A 32px);border-radius:5px;border:2px solid #6B2A2A;transition:transform 0.2s;}
+.rug-wrap:hover .rug{transform:scaleY(1.4);}
+.rug-wrap .tip{bottom:120%;white-space:normal;}
+.rug-wrap:hover .tip{display:block;}
+
+/* Books on wall */
+.wall-books{position:absolute;left:1.2rem;top:3.5rem;display:flex;flex-direction:column;gap:3px;}
+.book{width:14px;border-radius:2px;cursor:pointer;transition:transform 0.15s;}
+.book:hover{transform:scaleX(1.4);}
+
+/* ===== KITCHEN ===== */
+#room-kitchen{background:#1a241a;}
+.kitchen-scene{max-width:900px;margin:0 auto;padding:1rem 1rem 3rem;}
+.kwall{background:#F0E8D0;border-radius:14px 14px 0 0;padding:1.5rem 1.5rem 2rem;border:3px solid #D4C5A0;min-height:380px;}
+.k-title{font-family:'Caveat',cursive;font-size:2.2rem;color:var(--brown);text-align:center;margin-bottom:1.5rem;}
+.k-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;max-width:700px;margin:0 auto;}
+.kitem{background:#DDD0B0;border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:transform 0.2s;position:relative;border:2px solid #C8B98A;}
+.kitem:hover{transform:translateY(-5px);}
+.kitem-top{background:#C8B98A;height:8px;border-radius:6px 6px 0 0;margin:-1rem -1rem 0.8rem;}
+.kitem-emoji{font-size:2.2rem;display:block;margin-bottom:0.3rem;}
+.kitem-label{font-family:'Caveat',cursive;font-size:1.1rem;color:var(--brown);}
+.kitem .tip{bottom:110%;}
+.kitem:hover .tip{display:block;}
+
+/* ===== BEDROOM base ===== */
+#room-your-bedroom,#room-her-bedroom{background:#120d1a;}
+.bdrm-scene{max-width:900px;margin:0 auto;padding:1rem 1rem 3rem;}
+.bwall{border-radius:14px;padding:2rem;border:3px solid rgba(255,255,255,0.08);min-height:420px;}
+.my-wall{background:#2B1E3E;}
+.her-wall{background:#3E2415;}
+.bdrm-title{font-family:'Caveat',cursive;font-size:2.2rem;color:#fff;text-align:center;margin-bottom:1.5rem;opacity:0.9;}
+.bed{width:280px;margin:0 auto;cursor:pointer;transition:transform 0.2s;position:relative;}
+.bed:hover{transform:scale(1.02);}
+.bed-head{height:48px;border-radius:8px 8px 0 0;border:3px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+.bed-mat{background:#F5F0E8;height:95px;border-radius:0 0 8px 8px;border:3px solid rgba(255,255,255,0.1);position:relative;overflow:hidden;}
+.pillow{position:absolute;top:10px;width:68px;height:43px;background:#fff;border-radius:7px;border:2px solid #eee;}
+.pillow.l{left:14px;}.pillow.r{right:14px;}
+.duvet{position:absolute;bottom:0;left:0;right:0;height:52px;border-radius:0 0 6px 6px;}
+.bed .tip{white-space:normal;max-width:260px;}
+.bed:hover .tip{display:block;}
+.bdrm-items{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;margin-top:2rem;}
+.bitem{cursor:pointer;transition:transform 0.2s;position:relative;text-align:center;}
+.bitem:hover{transform:scale(1.1);}
+.bitem-emoji{font-size:2.4rem;display:block;}
+.bitem-label{font-family:'Caveat',cursive;font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.2rem;}
+.bitem .tip{white-space:normal;}
+.bitem:hover .tip{display:block;}
+.poster-wall{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;}
+.poster{width:78px;height:115px;border-radius:4px;border:3px solid rgba(255,255,255,0.15);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:0.5rem;cursor:pointer;transition:transform 0.2s;position:relative;overflow:hidden;}
+.poster:hover{transform:scale(1.08) rotate(-1deg);}
+.poster-emo{font-size:2.4rem;}
+.poster-label{font-family:'Caveat',cursive;font-size:0.7rem;color:#fff;text-align:center;background:rgba(0,0,0,0.5);width:100%;padding:3px;margin-top:auto;}
+.poster .tip{white-space:normal;left:auto;right:110%;bottom:auto;top:50%;transform:translateY(-50%);}
+.poster:hover .tip{display:block;}
+
+/* ===== BALCONY ===== */
+#room-balcony{background:#060d14;}
+.bal-scene{max-width:900px;margin:0 auto;padding:1rem 1rem 3rem;}
+.sky{background:linear-gradient(to bottom,#04090f 0%,#08152a 50%,#101f35 100%);border-radius:14px;padding:2rem;position:relative;overflow:hidden;min-height:480px;}
+.sky-stars-layer{position:absolute;inset:0;pointer-events:none;}
+.sky-star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 2s infinite;}
+.moon{position:absolute;top:1.5rem;right:2.5rem;width:58px;height:58px;background:#FFF8D0;border-radius:50%;box-shadow:0 0 25px rgba(255,248,208,0.35);cursor:pointer;transition:transform 0.2s;}
+.moon:hover{transform:scale(1.1);}
+.moon .tip{left:auto;right:110%;bottom:auto;top:50%;transform:translateY(-50%);white-space:normal;}
+.moon:hover .tip{display:block;}
+.bal-title{font-family:'Caveat',cursive;font-size:2.2rem;color:#fff;text-align:center;margin-bottom:2rem;opacity:0.9;}
+.railing-top{background:rgba(255,255,255,0.35);height:7px;border-radius:4px;max-width:460px;margin:1.5rem auto 0;}
+.railing-posts{display:flex;justify-content:center;gap:0;max-width:460px;margin:0 auto;}
+.rpost{background:rgba(255,255,255,0.25);width:5px;height:70px;margin:0 14px;border-radius:2px;}
+.bal-items{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;margin-top:2rem;}
+.bal-item{cursor:pointer;transition:transform 0.2s;position:relative;text-align:center;}
+.bal-item:hover{transform:scale(1.1) translateY(-5px);}
+.bal-emo{font-size:2.8rem;display:block;}
+.bal-label{font-family:'Caveat',cursive;font-size:0.95rem;color:rgba(255,255,255,0.65);margin-top:0.3rem;}
+.bal-item .tip{white-space:normal;}
+.bal-item:hover .tip{display:block;}
+.neighbour{position:absolute;right:0;top:38%;cursor:pointer;}
+.n-window{background:#1a1a2a;width:88px;height:78px;border:3px solid #333;border-radius:3px;display:flex;align-items:center;justify-content:center;}
+.n-figure{font-size:2rem;animation:peek 4s infinite;}
+@keyframes peek{0%,100%{transform:translateY(10px)}40%,60%{transform:translateY(0)}}
+.n-label{font-family:'Caveat',cursive;color:rgba(255,255,255,0.35);font-size:0.7rem;text-align:center;margin-top:2px;}
+.neighbour .tip{right:110%;left:auto;bottom:auto;top:50%;transform:translateY(-50%);white-space:normal;}
+.neighbour:hover .tip{display:block;}
+
+/* ===== LETTER ===== */
+#room-letter{background:#160a0a;}
+.letter-scene{max-width:680px;margin:0 auto;padding:3rem 1rem;text-align:center;}
+.letter-title{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--yellow);margin-bottom:0.5rem;}
+.letter-sub{color:rgba(255,255,255,0.5);font-size:0.9rem;margin-bottom:2rem;}
+.envelope{width:280px;margin:0 auto 1rem;cursor:pointer;transition:transform 0.3s;}
+.envelope:hover{transform:scale(1.04) rotate(-1deg);}
+.env-flap{width:0;height:0;border-left:140px solid transparent;border-right:140px solid transparent;border-bottom:90px solid var(--yellow-warm);}
+.env-body{background:var(--yellow-light);height:190px;border-radius:0 0 8px 8px;border:2px solid var(--yellow-warm);border-top:none;display:flex;align-items:center;justify-content:center;font-size:3rem;}
+.env-label{font-family:'Caveat',cursive;font-size:1.1rem;color:rgba(255,255,255,0.6);margin-top:0.8rem;}
+
+/* ===== CAPSULE ===== */
+#room-capsule{background:#060f08;}
+.capsule-scene{max-width:680px;margin:0 auto;padding:3rem 1rem;text-align:center;}
+.cap-title{font-family:'Caveat',cursive;font-size:3rem;color:#7EC8A0;margin-bottom:0.5rem;}
+.cap-sub{color:rgba(255,255,255,0.5);font-size:0.9rem;margin-bottom:1rem;}
+.jar{width:170px;height:210px;margin:2rem auto;position:relative;cursor:pointer;transition:transform 0.3s;}
+.jar:hover{transform:scale(1.05) rotate(2deg);}
+.jar-lid{background:rgba(100,160,120,0.5);border:3px solid rgba(180,220,200,0.5);height:32px;border-radius:7px 7px 0 0;position:absolute;top:0;left:10px;right:10px;}
+.jar-body{background:rgba(180,220,200,0.2);border:3px solid rgba(180,220,200,0.45);height:178px;border-radius:0 0 40px 40px;position:absolute;bottom:0;left:0;right:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
+.jar-emo{font-size:1.5rem;}
+.cap-btn{background:rgba(126,200,160,0.15);border:2px solid #7EC8A0;color:#7EC8A0;padding:0.8rem 2rem;border-radius:50px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:1rem;transition:all 0.2s;margin-top:1rem;}
+.cap-btn:hover{background:#7EC8A0;color:#060f08;}
+
+/* MUSIC */
+.music-btn{position:fixed;bottom:1.5rem;right:1.5rem;width:48px;height:48px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 18px rgba(245,200,66,0.4);z-index:200;transition:transform 0.2s;border:none;}
+.music-btn:hover{transform:scale(1.1);}
+.music-btn.muted{background:#555;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:500;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal-card{background:var(--cream);border-radius:16px;padding:2.5rem;max-width:560px;width:100%;max-height:85vh;overflow-y:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.5);animation:mIn 0.3s ease;}
+@keyframes mIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-mid);padding:0.2rem 0.5rem;border-radius:4px;line-height:1;}
+.modal-close:hover{background:rgba(0,0,0,0.08);}
+.modal-icon{font-size:2.2rem;display:block;margin-bottom:0.7rem;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--text-dark);margin-bottom:1rem;line-height:1.2;}
+.modal-body{font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.85;color:var(--text-mid);}
+.modal-body p{margin-bottom:1rem;}
+.modal-body p:last-child{margin-bottom:0;}
+.modal-body strong{color:var(--text-dark);font-weight:500;}
+
+@media(max-width:580px){
+  .room-btn{font-size:0.75rem;padding:0.25rem 0.6rem;}
+  .banner-text{font-size:1.6rem;}
+  .s-back{width:180px;}
+  .s-seat{width:180px;}
+  .tv{width:210px;height:125px;}
+  .modal-card{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="welcome">
+  <div class="stars-bg" id="stars-bg"></div>
+  <div class="welcome-content">
+    <div style="margin-bottom:1rem;">
+      <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/IMG_7190.jpg" alt="Annu and Sharzu" style="width:140px;height:140px;border-radius:50%;object-fit:cover;border:4px solid var(--yellow-warm);box-shadow:0 0 30px rgba(245,200,66,0.4);">
+    </div>
+    <div style="font-family:'Caveat',cursive;font-size:1rem;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.3rem;">202, Revon Residency</div>
+    <h1 class="welcome-title">Annu &amp; Sharzu's<br><em>tiny home,</em><br>full of love 🏠</h1>
+    <p class="welcome-sub">Happy Birthday, Annie-pie ✨</p>
+    <button class="enter-btn" onclick="enterFlat()">Open the front door 🚪</button>
+  </div>
+</div>
+
+<div id="flat" style="display:none;">
+
+<nav id="room-nav">
+  <span class="nav-label">🏠</span>
+  <button class="room-btn active" onclick="showRoom('living',this)">🛋️ Living Room</button>
+  <button class="room-btn" onclick="showRoom('kitchen',this)">🍳 Kitchen</button>
+  <button class="room-btn" onclick="showRoom('my-bedroom',this)">🛏️ My Room</button>
+  <button class="room-btn" onclick="showRoom('her-bedroom',this)">🛏️ Annie's Room</button>
+  <button class="room-btn" onclick="showRoom('balcony',this)">🌿 Balcony</button>
+  <button class="room-btn" onclick="showRoom('letter',this)">💌 Birthday Letter</button>
+  <button class="room-btn" onclick="showRoom('capsule',this)">🫙 Time Capsule</button>
+</nav>
+
+<!-- LIVING ROOM -->
+<div id="room-living" class="room active">
+  <div class="room-header">
+    <h2>🛋️ The Living Room</h2>
+    <p>Hover everything — secrets are everywhere</p>
+  </div>
+  <div class="living-scene">
+    <div class="birthday-banner">
+      <div class="banner-flags" id="banner-flags"></div>
+      <div class="banner-text">Anna Babu Can Do Anything!</div>
+    </div>
+    <div class="wall">
+      <div class="fairy-bar" id="fairy-wall"></div>
+      <!-- Neon sign -->
+      <div class="neon-sign" onclick="openModal('love-sign')">
+        ♡ LOVE ♡
+        <span class="tip">Click me 💕</span>
+      </div>
+      <!-- Books -->
+      <div class="wall-books" id="wall-books"></div>
+      <!-- TV -->
+      <div class="tv-wrap">
+        <div>
+          <div class="tv" onclick="openModal('tv')">
+            <div class="tv-screen">
+              <div class="tv-text">📺 Tamil Movie Night<br><span style="font-size:0.75rem;opacity:0.6">click to see what's on 👀</span></div>
+            </div>
+            <span class="tip">Our movie marathon HQ 🎬</span>
+          </div>
+          <div class="tv-stand"></div>
+          <div class="tv-base"></div>
+        </div>
+      </div>
+      <!-- Furniture row -->
+      <div class="frow">
+        <!-- Big lamp -->
+        <div class="lamp" onclick="openModal('lamp')">
+          <div class="lamp-glow" style="width:70px;height:70px;bottom:52px;"></div>
+          <div class="l-shade-big"></div>
+          <div class="l-pole-big"></div>
+          <div class="l-base-big"></div>
+          <span class="tip">Yellow light hours 💡</span>
+        </div>
+        <!-- Yellow sofa -->
+        <div class="sofa" onclick="openModal('sofa')">
+          <div class="sofa-body">
+            <div class="s-arm"></div>
+            <div class="s-back">
+              <div class="cushion"></div>
+              <div class="cushion"></div>
+              <div class="cushion"></div>
+            </div>
+            <div class="s-arm"></div>
+          </div>
+          <div style="display:flex;justify-content:center;"><div class="s-seat"></div></div>
+          <span class="tip" style="max-width:200px;">Our sacred yellow sofa 💛<br><em>click to remember</em></span>
+        </div>
+        <!-- Coffee table -->
+        <div class="ctable" onclick="openModal('coffee-table')">
+          <div class="ctable-items">🧴🥤🍫</div>
+          <div class="ctable-top"></div>
+          <div class="ctable-legs">
+            <div class="ctable-leg"></div>
+            <div class="ctable-leg"></div>
+          </div>
+          <span class="tip">The brown coffee table<br>with all the stash 👀</span>
+        </div>
+        <!-- Small lamp -->
+        <div class="lamp" onclick="openModal('lamp')">
+          <div class="lamp-glow" style="width:50px;height:50px;bottom:42px;"></div>
+          <div class="l-shade-sm"></div>
+          <div class="l-pole-sm"></div>
+          <div class="l-base-sm"></div>
+          <span class="tip">Yellow light hours 💡</span>
+        </div>
+        <!-- Christmas tree -->
+        <div class="xtree" onclick="openModal('xmas-tree')">
+          <div class="xt-star">⭐</div>
+          <div class="xt-t"></div>
+          <div class="xt-m"></div>
+          <div class="xt-b"></div>
+          <div class="xt-trunk"></div>
+          <span class="tip">Our little Christmas 🎄</span>
+        </div>
+      </div>
+      <!-- Rug -->
+      <div class="rug-wrap" onclick="openModal('rug')">
+        <div class="rug"></div>
+        <span class="tip" style="white-space:normal;max-width:200px;">The rug that has seen<br>everything 🌊</span>
+      </div>
+    </div>
+    <div class="floor"></div>
+  </div>
+</div>
+
+<!-- KITCHEN -->
+<div id="room-kitchen" class="room">
+  <div class="room-header">
+    <h2>🍳 The Kitchen</h2>
+    <p>90% takeout · 100% love</p>
+  </div>
+  <div class="kitchen-scene">
+    <div class="kwall">
+      <div class="k-title">🍳 Kitchen Diaries</div>
+      <div class="k-grid">
+        <div class="kitem" onclick="openModal('dosa')">
+          <div class="kitem-top"></div>
+          <span class="kitem-emoji">🫓</span>
+          <div class="kitem-label">Dosa Saturdays</div>
+          <span class="tip">Annie's dosas were legendary. Extra spicy, obviously. I just stood there waiting to devour them. 🌶️</span>
+        </div>
+        <div class="kitem" onclick="openModal('drinks')">
+          <div class="kitem-top"></div>
+          <span class="kitem-emoji">🍹</span>
+          <div class="kitem-label">Bar Corner</div>
+          <span class="tip">When we hosted parties, Annie would whip up the most incredible drinks. Born for this. 🥂</span>
+        </div>
+        <div class="kitem" onclick="openModal('takeout')">
+          <div class="kitem-top"></div>
+          <span class="kitem-emoji">📦</span>
+          <div class="kitem-label">Takeout HQ</div>
+          <span class="tip">Dosas. Indian Chinese. Mac & cheese. Pizza. Biryani. The holy roster. 🍕</span>
+        </div>
+        <div class="kitem" onclick="openModal('fridge')">
+          <div class="kitem-top"></div>
+          <span class="kitem-emoji">🧊</span>
+          <div class="kitem-label">The Sacred Fridge</div>
+          <span class="tip">Always: Coke, Paper Boat sparkling water, and saved dessert. Empty of groceries. Full of priorities. 💅</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MY BEDROOM -->
+<div id="room-my-bedroom" class="room">
+  <div class="room-header">
+    <h2>🛏️ My Room</h2>
+    <p>Organised chaos — only I knew what was where</p>
+  </div>
+  <div class="bdrm-scene">
+    <div class="bwall my-wall">
+      <div class="bdrm-title">💜 My Room</div>
+      <div class="bed" onclick="openModal('my-bed')">
+        <div class="bed-head" style="background:#3D2850;">🌙</div>
+        <div class="bed-mat">
+          <div class="pillow l"></div>
+          <div class="pillow r"></div>
+          <div class="duvet" style="background:linear-gradient(135deg,#6B3FA0,#9B6FD0);"></div>
+        </div>
+        <span class="tip" style="max-width:260px;">She always came with coffee in hand, pulling me out of my depressive sleeping patterns 💜<br><em>click for the memory</em></span>
+      </div>
+      <div class="bdrm-items">
+        <div class="bitem" onclick="openModal('my-coffee')">
+          <span class="bitem-emoji">☕</span>
+          <div class="bitem-label">Annie's rescue coffee</div>
+          <span class="tip" style="max-width:220px;">Coffee in hand. Every single time. Always a different excuse to leave the room. I always caved. 💜</span>
+        </div>
+        <div class="bitem" onclick="openModal('last-day')">
+          <span class="bitem-emoji">📱</span>
+          <div class="bitem-label">The last day</div>
+          <span class="tip" style="max-width:220px;">Waiting for the homeowner. So tired, so devastated. Just sharing Instagram stories, side by side. 💔</span>
+        </div>
+        <div class="bitem" onclick="openModal('my-chaos')">
+          <span class="bitem-emoji">🌀</span>
+          <div class="bitem-label">Organised chaos</div>
+          <span class="tip">Only I knew what was where. I would not change a thing. 🌀</span>
+        </div>
+        <div class="bitem" onclick="openModal('nothing-together')">
+          <span class="bitem-emoji">💛</span>
+          <div class="bitem-label">Doing nothing, together</div>
+          <span class="tip" style="max-width:220px;">Being together but doing nothing was our favourite pastime. That was everything.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HER BEDROOM -->
+<div id="room-her-bedroom" class="room">
+  <div class="room-header">
+    <h2>🛏️ Annie's Room</h2>
+    <p>Fun, chaotic, playful — always exactly like her</p>
+  </div>
+  <div class="bdrm-scene">
+    <div class="bwall her-wall">
+      <div class="bdrm-title">🧡 Annie's Room</div>
+      <div class="bed" onclick="openModal('her-bed')">
+        <div class="bed-head" style="background:#5C3A1E;">🌸</div>
+        <div class="bed-mat">
+          <div class="pillow l"></div>
+          <div class="pillow r"></div>
+          <div class="duvet" style="background:linear-gradient(135deg,#C4614A,#E8A87C);"></div>
+        </div>
+        <span class="tip" style="max-width:260px;">The best cuddle spot. When neither of us could sleep alone for the night. 🧡<br><em>click for the memory</em></span>
+      </div>
+      <div class="bdrm-items">
+        <div class="bitem" onclick="openModal('getting-ready')">
+          <span class="bitem-emoji">💄</span>
+          <div class="bitem-label">Getting ready chaos</div>
+          <span class="tip" style="max-width:220px;">Hours deciding outfits, lipstick, earrings for Bob's Bar. We always walked out looking incredible. 💅</span>
+        </div>
+        <div class="bitem" onclick="openModal('her-corner')">
+          <span class="bitem-emoji">✨</span>
+          <div class="bitem-label">Her bed corner</div>
+          <span class="tip">Nicest lights, best posters. Rajnikanth AND Pulp Fiction. That's Annie in one corner. 🎬</span>
+        </div>
+      </div>
+      <div class="poster-wall">
+        <div class="poster" style="background:linear-gradient(135deg,#1a0a2e,#3d1a6e);" onclick="openModal('rajni-poster')">
+          <span class="poster-emo">🦁</span>
+          <div class="poster-label">Rajnikanth</div>
+          <span class="tip">Thalaiva. Style icon. Legend. The only man allowed on Annie's wall. 🕶️</span>
+        </div>
+        <div class="poster" style="background:linear-gradient(135deg,#1a1a0e,#3a3a1a);" onclick="openModal('pulp-poster')">
+          <span class="poster-emo">🎬</span>
+          <div class="poster-label">Pulp Fiction</div>
+          <span class="tip">Classic. Chaotic. Iconic. Basically Annie's personality in a movie. 🎭</span>
+        </div>
+        <div class="poster" style="background:linear-gradient(135deg,#0d2a0d,#1a5c1a);" onclick="openModal('her-room-vibe')">
+          <span class="poster-emo">🌿</span>
+          <div class="poster-label">Her vibe</div>
+          <span class="tip">Good days to ugly days to the most gorgeous — always an honest reflection of her.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BALCONY -->
+<div id="room-balcony" class="room">
+  <div class="room-header">
+    <h2>🌿 The Balcony</h2>
+    <p>When the day ended for everyone — ours only began</p>
+  </div>
+  <div class="bal-scene">
+    <div class="sky">
+      <div class="sky-stars-layer" id="sky-stars"></div>
+      <div class="moon" onclick="openModal('moon')">
+        <span class="tip" style="max-width:180px;">Same moon, different cities. It makes the distance smaller. 🌕</span>
+      </div>
+      <div class="neighbour" onclick="openModal('neighbour')">
+        <div class="n-window"><span class="n-figure">👀</span></div>
+        <div class="n-label">the neighbour</div>
+        <span class="tip" style="max-width:200px;">Dried her clothes. Stared into our flat daily. We think she hated us. We did not care. 😂</span>
+      </div>
+      <h2 class="bal-title">🌙 Night time on the balcony</h2>
+      <div class="railing-top"></div>
+      <div class="railing-posts" id="railing-posts"></div>
+      <div class="bal-items">
+        <div class="bal-item" onclick="openModal('cannes')">
+          <span class="bal-emo">☕</span>
+          <div class="bal-label">Morning Cannes jury</div>
+          <span class="tip" style="max-width:220px;">Her coffee with milk, mine black. The most precious jury in the world, roasting Cannes outfits. 👑</span>
+        </div>
+        <div class="bal-item" onclick="openModal('night-coke')">
+          <span class="bal-emo">🥤</span>
+          <div class="bal-label">Night coke sessions</div>
+          <span class="tip" style="max-width:220px;">PJs. Coke. Comfort show. Bitching about everything with the kind of honesty only trust allows. 🌙</span>
+        </div>
+        <div class="bal-item" onclick="openModal('cigarette')">
+          <span class="bal-emo">🌬️</span>
+          <div class="bal-label">Where it all began</div>
+          <span class="tip" style="max-width:220px;">One mention of Ponniyin Selvan, one swung chair, one gossip — and then everything. 🩵</span>
+        </div>
+        <div class="bal-item" onclick="openModal('plants')">
+          <span class="bal-emo">🌿</span>
+          <div class="bal-label">The balcony plants</div>
+          <span class="tip">Thriving. Unlike us. We respected them for it. 😂</span>
+        </div>
+        <div class="bal-item" onclick="openModal('wine-night')">
+          <span class="bal-emo">🍺</span>
+          <div class="bal-label">Beer nights</div>
+          <span class="tip" style="max-width:220px;">This balcony held the most honest conversations of our lives. I have never had to soften myself for Annie. 🍺</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BIRTHDAY LETTER -->
+<div id="room-letter" class="room">
+  <div class="room-header">
+    <h2>💌 A Letter for Annie</h2>
+    <p>From Saranya, with everything</p>
+  </div>
+  <div class="letter-scene">
+    <div class="letter-title">For Annie-pie 💛</div>
+    <p class="letter-sub">Click the envelope. This one's just for you.</p>
+    <div class="envelope" onclick="openModal('full-letter')">
+      <div class="env-flap"></div>
+      <div class="env-body">💌</div>
+    </div>
+    <div class="env-label">Click to open your letter, Annie ✨</div>
+  </div>
+</div>
+
+<!-- TIME CAPSULE -->
+<div id="room-capsule" class="room">
+  <div class="room-header">
+    <h2>🫙 Time Capsule</h2>
+    <p>To be opened when we're sipping Aperol Spritz in Italy</p>
+  </div>
+  <div class="capsule-scene">
+    <div class="cap-title">Open me, someday</div>
+    <p class="cap-sub">Sealed with love. For the day our dreams come true.</p>
+    <div class="jar" onclick="openModal('time-capsule')">
+      <div class="jar-lid"></div>
+      <div class="jar-body">
+        <span class="jar-emo">✈️</span>
+        <span class="jar-emo">💌</span>
+        <span class="jar-emo">🌟</span>
+        <span class="jar-emo">🍹</span>
+      </div>
+    </div>
+    <button class="cap-btn" onclick="openModal('time-capsule')">🫙 Unseal the capsule</button>
+  </div>
+</div>
+
+<!-- Music button -->
+<button class="music-btn" id="music-btn" onclick="toggleMusic()">🎵</button>
+<audio id="bg-music" loop>
+  <source src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/nadiye_nadiye.mp3" type="audio/mpeg">
+</audio>
+
+</div><!-- end #flat -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="overlayClick(event)">
+  <div class="modal-card" id="modal-card">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <span class="modal-icon" id="modal-icon"></span>
+    <h2 class="modal-title" id="modal-title"></h2>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const M = {
+  'sofa':{icon:'🛋️',title:'The Yellow Sofa',body:`<p>Our yellow sofa. The centre of our universe.</p><p>Movie nights, crying sessions on the floor listening to Tanhaiyee, singing so loudly the neighbours could definitely hear, dancing like the most gifted people who ever lived.</p><p>Most of all — just cuddling up, music on, doomscrolling until we fell asleep on each other.</p><p>Crappy Tamil movies on that yellow sofa, in that living room, is our happy place. Always will be.</p>`},
+  'tv':{icon:'📺',title:'Movie Marathon HQ',body:`<p>This TV has seen things. Marathons through the night. Every new trailer watched together in full anticipation — the rule was, nothing important without the other. Even if it meant waiting hours to finally be free at the same time.</p><p>Tamil movies, comfort films, shows we'd seen ten times. It never mattered what was on. It only mattered who was watching it with me.</p>`},
+  'coffee-table':{icon:'☕',title:'The Brown Coffee Table',body:`<p>The humble brown coffee table that witnessed everything. It held our stash, our snacks, our half-drunk glasses, our phones face-down when the conversations got too real.</p><p>The perfect distance from the sofa. Close enough to reach without getting up. The mark of a truly good flat.</p>`},
+  'lamp':{icon:'💡',title:'Yellow Light Hours',body:`<p>Yellow lights. Warm, soft, always on.</p><p>Because warm light is for warm people, and that flat was the warmest place I have ever lived — not because of the lights, but because of who was in it.</p>`},
+  'xmas-tree':{icon:'🎄',title:'Our Christmas',body:`<p>A Christmas tree that absolutely did not match the chaotic energy of who we were, and somehow fit perfectly anyway.</p><p>Some decorations. Some fairy lights. Maximum spirit. That was always us.</p>`},
+  'rug':{icon:'🌊',title:'The Rug That Saw Everything',body:`<p>This rug has absorbed more tears than any rug should ever have to. It has also absorbed more laughter, more dancing, more middle-of-the-night lying-down-talking-about-everything moments than most rugs will ever know.</p><p>A rug like that deserves a medal. Or at least a very long wash.</p>`},
+  'love-sign':{icon:'💕',title:'♡ LOVE ♡',body:`<p>The neon pink love sign that lit up that living room in the most perfect way.</p><p>It was a reminder, every single day, of what that flat was built on.</p><p>Love. That is the whole thing. That has always been the whole thing.</p>`},
+  'dosa':{icon:'🫓',title:'Dosa Saturdays',body:`<p>Saturday mornings. Annie at the pan. Me standing approximately six inches too close, pretending to help but actually just waiting to eat.</p><p>The greatest dosas. Extra spice, always. She loved everything to be spicy, and I loved everything she made.</p><p>The ritual of it — the smell, the sizzle, the patience — is one of my favourite things I will carry from that flat forever.</p>`},
+  'drinks':{icon:'🍹',title:'Annie the Mixologist',body:`<p>When we hosted parties, Annie would step behind the kitchen counter and become someone else entirely — confident, creative, completely in her element.</p><p>The drinks she made were genuinely insane. Nobody quite knew where she learned it. She just could.</p><p>Some people have a gift. Annie's gift, among very many, was this.</p>`},
+  'takeout':{icon:'📦',title:'The Takeout Files',body:`<p>Dosas. Indian Chinese. Mac and cheese. Pizza. Biryani.</p><p>The canon. The holy roster. 90% of our meals. 100% of the happiness.</p><p>We were never going to be the girls who meal prepped. We were the girls who found the best places within 3km and ordered with the full confidence of regulars.</p>`},
+  'fridge':{icon:'🧊',title:'The Sacred Fridge',body:`<p>Empty of anything sensible. Always stocked with exactly: Coke, Paper Boat sparkling water, and some dessert that had been carefully saved.</p><p>The fridge perfectly reflected our priorities. Sweet, fizzy, and absolutely worth protecting.</p>`},
+  'my-bed':{icon:'💜',title:'My Room',body:`<p>Organised chaos. Only I knew what was where at any given point, and I would not change a single thing about it.</p><p>Annie knew this room too — she'd come in whenever I'd go into my depressive sleeping patterns. Coffee in hand. Some excuse, always a different one. "Come watch this." "I need your opinion." "There's something on TV."</p><p>I always caved. She knew I would. And she came anyway, every time. That is love in its simplest, purest form.</p>`},
+  'my-coffee':{icon:'☕',title:'The Rescue Coffee',body:`<p>She would walk in — coffee in hand — and stand at the edge of my bed with the gentlest form of persistence I have ever experienced.</p><p>Not pushy. Not dramatic. Just there. Warm, patient, steady. "Come on. Living room. We'll do nothing. Together."</p><p>Being together but doing nothing was our favourite pastime. And she always made the first move to start it.</p>`},
+  'last-day':{icon:'📱',title:'The Last Day',body:`<p>Our last day in that flat. Waiting for the homeowner. It was taking forever. We were exhausted — physically, emotionally, in every way a person can be tired.</p><p>We sat in my room. So tired. So devastated with everything that was changing. We didn't speak much.</p><p>We just shared Instagram stories with each other. Side by side. As the hours passed.</p><p>I will remember that room forever, but mostly I will remember that moment — the quiet weight of it, and how it still felt okay because she was next to me.</p>`},
+  'my-chaos':{icon:'🌀',title:'Organised Chaos',body:`<p>My system. Incomprehensible to outsiders. Completely logical to me.</p><p>Annie respected it, even when she didn't understand it. That's the thing about her — she lets you be exactly who you are, in exactly the way you are it.</p>`},
+  'nothing-together':{icon:'💛',title:'Doing Nothing, Together',body:`<p>This was our favourite thing. Not the parties, not the nights out, not the plans we made and executed.</p><p>This. Just being in the same room. Doing nothing in particular. Existing side by side.</p><p>I have never felt more at home anywhere than I did in those moments. Home was never the four walls. Home was her.</p>`},
+  'her-bed':{icon:'🧡',title:"Annie's Room",body:`<p>Fun, chaotic, playful — it always reflected exactly where she was at. On good days, glorious. On hard days, a beautiful honest mess. On the best days, the most well-done up, curated space you've ever seen.</p><p>Her room was alive. It had her energy in every corner.</p><p>I loved curling up next to her when one of us couldn't sleep alone for the night. Her bed was always one of the safest places.</p>`},
+  'getting-ready':{icon:'💄',title:'Getting Ready Marathons',body:`<p>Hours. We would spend hours in Annie's room getting ready.</p><p>Which outfit? Which lipstick? Which earrings will make heads turn tonight at Bob's Bar?</p><p>The process was the point. The getting ready was its own kind of joy — music on, trying things on, laughing at the bad choices, celebrating the final look together.</p><p>We always walked out of that flat looking incredible. And we always knew it.</p>`},
+  'her-corner':{icon:'✨',title:"Her Bed Corner",body:`<p>The nicest lights. The best posters. Carefully curated to summarise exactly who Annie is.</p><p>Rajnikanth and Pulp Fiction. That is the full personality breakdown right there — iconic, cinematic, full of attitude, and completely her own.</p><p>I loved that corner. It looked like her.</p>`},
+  'rajni-poster':{icon:'🕶️',title:'Thalaiva',body:`<p>Style unmatched. Presence unmatched. The only man who could share a wall with Pulp Fiction and make it work.</p><p>Annie's love for Rajnikanth is one of the things I will always find deeply, genuinely joyful about her.</p><p>Padayappa, for the 100th time, eating mangoes with ice cream. That is the dream. That is the plan. It is written here, in this capsule, and it will happen.</p>`},
+  'pulp-poster':{icon:'🎬',title:'Pulp Fiction',body:`<p>Classic. Nonlinear. Iconic. A little chaotic.</p><p>Basically Annie's personality in movie form.</p><p>A perfect choice for a perfect wall.</p>`},
+  'her-room-vibe':{icon:'🌿',title:'The Annie Vibe',body:`<p>Good, bad, ugly, or the most gorgeous setup you've ever seen — her room was always an honest reflection of her state of mind.</p><p>That kind of authenticity is rare. Annie has never once pretended to be something she isn't. Not even her room pretended.</p><p>I love her for that more than I can say.</p>`},
+  'cannes':{icon:'☕',title:'Cannes Jury Duties',body:`<p>Waking up extra early. Making our coffees — hers with milk, mine black — and taking up our official positions as the most precious jury members in the world.</p><p>The Cannes red carpet had absolutely no idea it was being watched by us. Their loss, honestly. We were thorough, specific, and extremely well-caffeinated.</p><p>The balcony was our studio. The world was our material.</p>`},
+  'night-coke':{icon:'🌙',title:'Night Time on the Balcony',body:`<p>When the day had ended for everyone else, for us it had only just begun.</p><p>PJs. Coke. Our comfort show. Bitching about everything and everyone with the kind of honesty that only exists between people who genuinely, completely trust each other.</p><p>Night times on this balcony are some of the most alive I have ever felt.</p>`},
+  'cigarette':{icon:'🌬️',title:'Where It All Began',body:`<p>One mention of Ponniyin Selvan. One swung chair.</p><p>One early office conversation that turned into a sleepover, then one cigarette, one gossip, one honest moment after another — acquaintances to friends to roommates to soulmates.</p><p>That is the whole story. And it is the best story I know.</p>`},
+  'plants':{icon:'🌿',title:'The Balcony Plants',body:`<p>Living their best lives. Growing. Thriving.</p><p>Unlike the two chaotic humans inside, the plants had it completely figured out.</p><p>We respected them for that. Deeply.</p>`},
+  'wine-night':{icon:'🍺',title:'Beer Nights',body:`<p>The balcony after dark. Cold beers between us. The most honest conversations.</p><p>This balcony heard things I would not say anywhere else. And so did she.</p><p>That is what makes her different from everyone else in my life — I have never, not once, had to soften myself for Annie. She holds all of it. Every single part.</p>`},
+  'moon':{icon:'🌕',title:'Same Moon',body:`<p>Somewhere, right now, we are looking at the same moon.</p><p>Different cities. Different time zones. Same moon.</p><p>That always makes the distance feel smaller.</p>`},
+  'neighbour':{icon:'👀',title:'The Judgemental Neighbour',body:`<p>Every morning, without fail, she would appear on her terrace to dry her clothes and stare directly into our flat with the energy of someone who had a lot of Opinions about our lifestyle.</p><p>She may have hated us. We genuinely cannot say for certain.</p><p>We never cared. Not even a little bit. We waved sometimes, just to keep her guessing.</p>`},
+  'full-letter':{icon:'💌',title:'Happy Birthday, Annie-pie',body:`
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem;">
+    <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/IMG_1131.jpg" alt="us" style="width:100%;height:160px;object-fit:cover;border-radius:8px;">
+    <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/IMG_1205.jpg" alt="us" style="width:100%;height:160px;object-fit:cover;border-radius:8px;">
+    <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/3443d623-b972-4571-84bb-9a3c62a36233.jpg" alt="us" style="width:100%;height:160px;object-fit:cover;border-radius:8px;">
+    <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/IMG_1890.jpg" alt="us" style="width:100%;height:160px;object-fit:cover;border-radius:8px;">
+  </div>
+  <p>It all started when I walked into your team's space one day — still pretty new, still figuring things out — and somehow managed to mention Ponniyin Selvan. You swung your chair around so fast. That was it. That was the beginning of everything.</p><p>One sleepover, one cigarette, one gossip at a time — we went from acquaintances to friends to roommates to what we are now: soulmates. You are the other half of my existence. You are the reason I survived anything in the past three years of my life.</p><p>Here is what I want you to know on your birthday: most people see Annie — sweet, easygoing, sunshine wrapped into a tiny human body. I have had the privilege of seeing something else. I have seen what your heart is actually capable of. The inner strength in you is unbelievable. You have survived the worst of days with nothing but a smile on your face. You let yourself sleep in, you have your coffee, and then you fight the day like nothing has ever happened. In full style, mind you. That woman single-handedly makes all of Bangalore look more put together.</p><p>I miss coming home to you. I miss you coming home to me. I miss debriefing our days, even though we worked in the same office and our days were wildly different. I miss getting ready for Bob's Bar, making new alcohol recipes, waiting eagerly to watch every new movie trailer together. I miss feeling at home. And for me, home was never the four walls — it was you.</p><p>Living with you taught me that it's the little things that count. Showing up for each other in the most mundane moments is what life is all about. I will always remember that.</p><p>Even though our 20s were a rollercoaster — which they absolutely were — our lives are only going to get more beautiful from here. Anna, efforts never go to waste. Even when they take time. And when they do, I will be right there next to you, being your biggest cheerleader.</p><p>In 10 years we are going to be living our best lives, celebrating your birthday in Italy, sipping on Aperol Spritz, laughing about all the problems that seem so impossibly big right now.</p><p>Annie, your birthday will always be special — even if it doesn't feel like it does right now. I will meet you soon, and we will celebrate it together. And that day will be your birthday 2.0.</p><p style="font-family:'Caveat',cursive;font-size:1.4rem;color:#8B6347;margin-top:1.5rem;line-height:1.6;">I love you. Always, always, always.<br>— Saranya 💛</p>`},
+  'time-capsule':{icon:'🫙',title:'Time Capsule — Sealed With Love',body:`
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1.5rem;">
+    <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/IMG_1985.jpg" alt="memory" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+    <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/IMG_7190.jpg" alt="memory" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+    <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/IMG_9335.jpg" alt="memory" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+    <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/b1d8aaac-9e41-4cb3-9cf6-6778a2c634a7.jpg" alt="memory" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+    <img src="https://raw.githubusercontent.com/Saranya-1208/Annie-Bday/main/IMG_1890.jpg" alt="memory" style="width:100%;height:120px;object-fit:cover;border-radius:8px;grid-column:span 2;">
+  </div>
+  <p><strong>📍 What we are doing in the next year:</strong><br>Taking a vacation together. This has been the one thing we have not managed to pull off. Vietnam, hopefully. Fingers crossed. We are making it happen.</p><p><strong>🗼 Places we have promised each other:</strong><br>Paris. And Disneyland. Both. Non-negotiable. We have shaken on this.</p><p><strong>🌟 Where I see Annie in 5 years:</strong><br>Her best version. The hottest body, the sharpest mind, the most amazing jewellery collection, clothes people would want to steal, and a home she has envisioned from scratch. With me on her sofa, a beer in hand, watching Padayappa for the 100th time, eating mangoes with ice cream.</p><p><strong>💌 A reminder for the day you open this:</strong><br>No matter what — absolutely no matter what — you have me in your corner at all times. Even if you want to do the craziest thing for the plot, I will be there to take photos of it so I can remind you forever what a beautiful, silly, wonderful girl you are.</p><p><strong>✨ A prediction:</strong><br>Annie, you will receive love that is so generous it will fill up your heart, home and soul. Trust me. You are meant for nothing less than that.</p><p style="font-family:'Caveat',cursive;font-size:1.2rem;color:#8B6347;margin-top:1.5rem;">Sealed in love. Opened whenever you need it. 💛</p>`}
+};
+
+function openModal(key){
+  const m=M[key];if(!m)return;
+  document.getElementById('modal-icon').textContent=m.icon||'';
+  document.getElementById('modal-title').textContent=m.title;
+  document.getElementById('modal-body').innerHTML=m.body;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+function overlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+
+function showRoom(name,btn){
+  document.querySelectorAll('.room').forEach(r=>r.classList.remove('active'));
+  document.querySelectorAll('.room-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('room-'+name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+let musicOn=false;
+function toggleMusic(){
+  const a=document.getElementById('bg-music');
+  const btn=document.getElementById('music-btn');
+  if(musicOn){a.pause();btn.textContent='🔇';btn.classList.add('muted');}
+  else{a.play().catch(()=>{});btn.textContent='🎵';btn.classList.remove('muted');}
+  musicOn=!musicOn;
+}
+
+function enterFlat(){
+  const w=document.getElementById('welcome');
+  w.classList.add('fade-out');
+  setTimeout(()=>{
+    w.style.display='none';
+    document.getElementById('flat').style.display='block';
+    buildDecor();
+  },800);
+}
+
+function buildDecor(){
+  // Welcome stars
+  const sb=document.getElementById('stars-bg');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div');s.className='star';
+    const sz=Math.random()*3+1;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s`;
+    sb.appendChild(s);
+  }
+  // Banner flags
+  const colors=['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#C77DFF','#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#C77DFF','#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF6B6B','#C77DFF','#6BCB77'];
+  const bf=document.getElementById('banner-flags');
+  colors.forEach(c=>{const f=document.createElement('span');f.className='flag';f.style.background=c;bf.appendChild(f);});
+  // Fairy lights on wall
+  const fw=document.getElementById('fairy-wall');
+  const bulbColors=['#FFD93D','#FF6B6B','#6BCB77','#4D96FF','#C77DFF','#FF9F43'];
+  for(let i=0;i<28;i++){
+    const b=document.createElement('div');b.className='fbulb';
+    b.style.cssText=`background:${bulbColors[i%bulbColors.length]};position:relative;`;
+    b.style.animationDelay=`${Math.random()*2}s`;
+    fw.appendChild(b);
+  }
+  // Wall books
+  const wb=document.getElementById('wall-books');
+  const bookColors=['#C0392B','#2980B9','#27AE60','#8E44AD','#E67E22','#1ABC9C','#E74C3C'];
+  const bookHeights=[60,50,70,55,65,48,72];
+  bookColors.forEach((c,i)=>{
+    const b=document.createElement('div');b.className='book';
+    b.style.cssText=`background:${c};height:${bookHeights[i]}px;`;
+    wb.appendChild(b);
+  });
+  // Sky stars
+  const ss=document.getElementById('sky-stars');
+  for(let i=0;i<55;i++){
+    const s=document.createElement('div');s.className='sky-star';
+    const sz=Math.random()*2+0.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*70}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s`;
+    ss.appendChild(s);
+  }
+  // Railing posts
+  const rp=document.getElementById('railing-posts');
+  for(let i=0;i<18;i++){const p=document.createElement('div');p.className='rpost';rp.appendChild(p);}
+}
+</script>
+</body>
+</html>
